@@ -7,17 +7,21 @@
         "ext-iconv": "*",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "*",
+        "symfony/debug-bundle": "*",
         "symfony/flex": "^1.1",
+        "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "*",
+        "symfony/swiftmailer-bundle": "^3.2",
         "symfony/twig-bundle": "*",
         "symfony/yaml": "*"
     },
     "require-dev": {
         "symfony/dotenv": "*",
         "symfony/maker-bundle": "^1.7",
+        "symfony/phpunit-bridge": "*",
         "symfony/profiler-pack": "^1.0",
         "symfony/var-dumper": "*"
     },

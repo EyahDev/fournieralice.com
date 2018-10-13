@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base/base.html.twig' %}
 
 {% block body %}
     {% if error %}
@@ -17,4 +17,6 @@
 
         <button type="submit">login</button>
     </form>
+
+    <a href="{{ path('lostPassword') }}">Mot de passe perdu ? </a>
 {% endblock %}
