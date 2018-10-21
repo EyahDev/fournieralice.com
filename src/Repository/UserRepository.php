@@ -22,17 +22,4 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
-
-    /**
-     * @param $email
-     * @return bool
-     */
-    public function getUserEmail($email) {
-        $query = $this->createQueryBuilder('u')
-            ->select('u.username')
-            ->where('u.username = :email')
-            ->setParameter('email', $email)->getQuery()->getResult();
-
-        return $query ? true : false;
-    }
 }

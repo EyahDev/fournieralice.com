@@ -6,11 +6,13 @@ namespace App\Services\Utils;
 class TokenGeneratorService
 {
     /**
-     * @param $text
+     * Génère un token aléatoire d'une longueur à définir
+     *
+     * @param int $length
      * @return string
      * @throws \Exception
      */
-    public function generateRandomToken($text) {
-        return bin2hex(random_bytes(strlen($text)));
+    public function generateRandomToken(int $length) {
+        return bin2hex(random_bytes($length));
     }
 }

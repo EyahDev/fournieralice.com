@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Adrien
- * Date: 15/09/2018
- * Time: 12:53
- */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Security;
 
 
 use Symfony\Component\Form\AbstractType;

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -42,6 +44,16 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      */
     private $phone;
+
+    /**
+     * @ORM\Column(name="reset_password_token", type="string", length=255, nullable=true)
+     */
+    private $resetPasswordToken;
+
+    /**
+     * @ORM\Column(name="reset_password_token_validity_date", type="datetime", nullable=true)
+     */
+    private $resetPasswordTokenValidityDate;
 
     /**
      * @return int|null
@@ -137,13 +149,58 @@ class User implements UserInterface, \Serializable
 
     /**
      * @param string $password
+     * @param UserPasswordEncoderInterface $encoder
      * @return User
      */
-    public function setPassword(string $password): self
+    public function setPassword(string $password, UserPasswordEncoderInterface $encoder): self
     {
-        $this->password = $password;
+        $this->password = $encoder->encodePassword($this, $password);
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResetPasswordToken()
+    {
+        return $this->resetPasswordToken;
+    }
+
+    /**
+     * @param mixed $resetPasswordToken
+     */
+    public function setResetPasswordToken($resetPasswordToken): void
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResetPasswordTokenValidityDate()
+    {
+        return $this->resetPasswordTokenValidityDate;
+    }
+
+    /**
+     * @param mixed $resetPasswordTokenValidityDate
+     */
+    public function setResetPasswordTokenValidityDate($resetPasswordTokenValidityDate): void
+    {
+        $this->resetPasswordTokenValidityDate = $resetPasswordTokenValidityDate;
+    }
+
+    /**
+     * @param $token
+     * @throws \Exception
+     */
+    public function resetPasswordTokenProcess($token) {
+        $validityDate = new \DateTime();
+        $validityDate->add(new \DateInterval('PT1H'));
+
+        $this->setResetPasswordToken($token);
+        $this->setResetPasswordTokenValidityDate($validityDate);
     }
 
     /**
