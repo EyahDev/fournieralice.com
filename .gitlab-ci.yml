@@ -55,7 +55,7 @@ deploy_staging:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - touch .env && echo -e $ENV_FILE >> .env
+    - touch .env && echo -e ENV_STAGING_FILE >> .env
     - > 
       ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 
       'cd staging.adriendesmet.com/ &&
@@ -67,8 +67,14 @@ deploy_staging:
       composer install --optimize-autoloader'
     - scp -P $STAGING_PORT .env $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
     - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console doctrine:migrations:migrate'
+
+  environment:
+    name: STAGING
+    url: http://$STAGING_ENV_URL
+    
   only:
     - dev
+    - fix-and-enh-gitlab
   
 #deploy_prod:
 #  stage: deploy
