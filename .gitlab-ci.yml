@@ -55,7 +55,7 @@ deploy_staging:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - touch .env && echo -e ENV_STAGING_FILE >> .env
+    - touch .env && echo -e $ENV_STAGING_FILE >> .env
     - > 
       ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 
       'cd staging.adriendesmet.com/ &&
@@ -71,7 +71,7 @@ deploy_staging:
   environment:
     name: STAGING
     url: http://$STAGING_ENV_URL
-    
+
   only:
     - dev
     - fix-and-enh-gitlab
