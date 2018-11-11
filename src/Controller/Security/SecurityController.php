@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -38,8 +37,6 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Route pour déclarer son mot de passe perdu
-     *
      * @param Request $request
      * @param \Swift_Mailer $mailer
      * @param TokenGeneratorService $tokenGenerator
@@ -87,6 +84,11 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @param $token
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
      * @Route(name="resetPassword", path="/administration/password/reset/{token}")
      */
     public function resetPassword($token, Request $request, UserPasswordEncoderInterface $encoder)
@@ -106,7 +108,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($form->get('password'), $encoder);
+            $user->setPassword($form->get('password')->getData(), $encoder);
             $user->setResetPasswordTokenValidityDate(null);
             $user->setResetPasswordToken(null);
 

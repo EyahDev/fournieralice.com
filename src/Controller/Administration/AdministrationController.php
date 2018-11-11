@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdministrationController extends AbstractController
 {
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route(name="dashboard", path="/administration/dashboard")
      */
     public function dashboard()

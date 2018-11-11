@@ -20,7 +20,7 @@ security:
                 login_path: /administration
                 check_path: /administration
                 require_previous_session: false
-                default_target_path: /dashboard
+                default_target_path: /administration/dashboard
 
             remember_me:
                 secret: '%kernel.secret%'
