@@ -3,7 +3,7 @@
 namespace App\Services\Utils;
 
 
-class TokenGeneratorService
+class TokenGenerator
 {
     /**
      * Génère un token aléatoire d'une longueur à définir

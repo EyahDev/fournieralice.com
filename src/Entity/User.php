@@ -3,8 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -149,12 +148,11 @@ class User implements UserInterface, \Serializable
 
     /**
      * @param string $password
-     * @param UserPasswordEncoderInterface $encoder
      * @return User
      */
-    public function setPassword(string $password, UserPasswordEncoderInterface $encoder): self
+    public function setPassword(string $password): self
     {
-        $this->password = $encoder->encodePassword($this, $password);
+        $this->password = $password;
 
         return $this;
     }
