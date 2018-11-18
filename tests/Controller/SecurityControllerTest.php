@@ -55,7 +55,6 @@ class SecurityControllerTest extends WebTestCase
         $link = $crawler
             ->selectLink("Mot de passe perdu ?")
             ->link();
-        dump($link);
 
         $crawler = $client->click($link);
 
