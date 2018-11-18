@@ -35,7 +35,7 @@ stages:
 test:
   script:
     - echo "Running tests"
-    - ./bin/phpunit --coverage-text --colors=never tests/
+    - php ./bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
