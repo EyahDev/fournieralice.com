@@ -27,8 +27,6 @@ before_script:
   - docker-php-ext-enable xdebug
   - php composer.phar install
 
-
-
 stages:
   - test
 #   - build
@@ -37,7 +35,7 @@ stages:
 test:
   script:
     - echo "Running tests"
-    - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never tests/
+    - ./bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
