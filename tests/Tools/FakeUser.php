@@ -8,9 +8,9 @@
 
 namespace App\Tests\Tools;
 
-
 use App\Entity\User;
-use App\Services\Utils\TokenGeneratorService;
+use App\Services\Utils\TokenGenerator;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -28,11 +28,12 @@ class FakeUser extends WebTestCase
 
         $encoder = self::$container->get('security.password_encoder');
 
-        $tokenGenerator = new TokenGeneratorService();
+        $tokenGenerator = new TokenGenerator();
 
         $fakeUser = new User();
+
         $fakeUser->setUsername('exemple@mail.com');
-        $fakeUser->setPassword('complexePassword123', $encoder);
+        $fakeUser->setPassword($encoder->encodePassword($fakeUser, 'complexePassword123'));
         $fakeUser->setFirstname('Jane');
         $fakeUser->setLastname('Doe');
         $fakeUser->setPhone('0102030405');
@@ -43,12 +44,11 @@ class FakeUser extends WebTestCase
     }
 
     /**
+     * @param $client Client
      * @throws \Exception
      */
-    public function logIn()
+    public function logIn($client)
     {
-        $client = static::createClient();
-
         $session = $client->getContainer()->get('session');
 
         $firewallName = 'main';

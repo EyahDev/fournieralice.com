@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\Type\Security\LostPasswordType;
 use App\Form\Type\Security\ResetPasswordType;
 use App\Services\Utils\TokenGenerator;
-use App\Services\Utils\TokenGeneratorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,10 +54,11 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()['email'];
-
+            dump($email);
             $user = $em->getRepository(User::class)->findOneBy(['username' => $email]);
 
             if ($user) {
+
                 $token = $tokenGenerator->generateRandomToken(10);
 
                 $user->resetPasswordTokenProcess($token);
