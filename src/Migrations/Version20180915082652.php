@@ -13,7 +13,7 @@ final class Version20180915082652 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE user (
-            id_user INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+            id_user SERIAL PRIMARY KEY, 
             username VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             firstname VARCHAR(255),

@@ -19,29 +19,36 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
-    /**
-     * @var null|Client
-     */
-    private $client = null;
+    public function testRouteAdministration() {
 
-    /**
-     * @var FakeUser
-     */
-    private $fakeUser;
+        $client = self::createClient();
 
-    /**
-     * @throws \Exception
-     */
-    public function setUp() {
-        $this->fakeUser = new FakeUser();
+        $crawler = $client->request('GET', '/administration');
 
-        $this->client = static::createClient();
+        // Test du code HTTP retour
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+
+        // Test du contenu (bouton de connexion du formulaire)
+        $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
     }
 
-    public function testRouteHomePage() {
-        $client = static::createClient();
+    public function testLogInToAdministration() {
+        /* Test de connexion avec de bon identifiants */
+        $client = self::createClient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/administration');
+
+        $form = $crawler->selectButton('login')->form();
+
+        $form['_username'] = 'exemple@mail.com';
+        $form['_password'] = 'complexePassword123';
+
+        $crawler = $client->submit($form);
+
+        // Test du contenu (titre de la page)
+        $this->assertSame(1, $crawler->filter('html:contains("dashboard")')->count());
+
+        /* Test de connexion avec de mauvais identifiants */
 
         // Test du code retour
         $this->assertSame(200, $client->getResponse()->getStatusCode());
@@ -55,11 +62,34 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/administration');
 
-        // Test du code retour
+        // Formulaire (avec login incorrecte)
+        $form = $crawler->selectButton('login')->form();
+
+        $form['_username'] = 'exemple@mail.com';
+        $form['_password'] = 'wrongComplexePassword123';
+
+        $client->submit($form);
+
+        $crawler = $client->followRedirect();
+
+        // Test du contenu (message d'erreurs concernant les identifiants)
+        $this->assertSame(1, $crawler->filter('html:contains("Invalid credentials.")')->count());
+    }
+
+    public function testRouteAdministrationDashboard() {
+
+        $client = self::createClient(array(), array(
+            'PHP_AUTH_USER' => 'exemple@mail.com',
+            'PHP_AUTH_PW'   => 'complexePassword123',
+        ));
+
+        $crawler = $client->request('GET', '/administration/dashboard');
+
+        // Test du code HTTP retour
         $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         // Test du contenu (bouton de connexion du formulaire)
-        $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("dashboard")')->count());
     }
 
     /**
@@ -78,22 +108,9 @@ class SecurityControllerTest extends WebTestCase
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("Email du mot de passe perdu")')->count());
-
 //        $form = $crawler->selectButton('Envoyer')->form(array('lost_password[email]' => 'exemple@mail.com'));
-//
-//        $client->submit($form);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testLoginToAdministration() {
         $client = static::createClient();
-
-        $this->fakeUser->logIn($client);
-
         $crawler = $client->request('GET', '/administration/dashboard');
-
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame('Dashboard', $crawler->filter('p')->text());
     }

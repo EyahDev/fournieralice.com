@@ -1,7 +1,7 @@
 {% extends 'base/base.html.twig' %}
 
 {% block body %}
-    <p>Dashboard</p>
+    <p>Dashboard, bonjour {{ app.user.firstname }}</p>
     <p><a href="{{ path('userInformations') }}">Editer mes informations</a></p>
     <p><a href="{{ path('changePassword') }}">Changer mon mot de passe</a></p>
 {% endblock %}
