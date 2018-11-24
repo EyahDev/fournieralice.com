@@ -37,6 +37,8 @@ test:
     - echo "Running tests"
     - touch .env && echo -e $ENV_TEST_FILE >> .env
     - php bin/console doctrine:database:create
+    - php bin/console doctrine:migrations:migrate
+    - php bin/console doctrine:fixtures:load
     - php ./bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
