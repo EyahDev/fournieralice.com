@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Services\Utils\TokenGeneratorService;
+use App\Services\Utils\TokenGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -30,21 +30,43 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // Création d'un utilisateur fictif
+        // Création d'utilisateurs fictifs
+        $fakeUsers = [['username' => 'jane.doe@mail.com',
+                'password' => 'complexePassword123',
+                'firstname' => 'Jane',
+                'lastname' => 'Doe',
+                'phone' => '0102030405',
+                'token' => 'b63339d02de3aa033866',
+                'tokenDate' => null
+            ], ['username' => 'john.doe@mail.com',
+                'password' => 'complexePassword123',
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+                'phone' => '0102030405',
+                'token' => 'b63339d02de3bb033866',
+                'tokenDate' => new \DateTime('2018-11-01 10:00:00')]
+        ];
 
-        $user = new User();
-        $user->setUsername('exemple@mail.com');
-        $user->setPassword('complexePassword123', $this->encoder);
-        $user->setFirstname('Jane');
-        $user->setLastname('Doe');
-        $user->setPhone('0102030405');
+        foreach ($fakeUsers as $fakeUser) {
+            $user = new User();
 
-        $tokenGenerator = new TokenGeneratorService();
+            $password = $this->encoder->encodePassword($user, $fakeUser['password']);
 
-        $user->setResetPasswordToken($tokenGenerator->generateRandomToken(10));
-        $user->setResetPasswordTokenValidityDate(new \DateTime());
+            $user->setUsername($fakeUser['username']);
+            $user->setPassword($password);
+            $user->setFirstname($fakeUser['firstname']);
+            $user->setLastname($fakeUser['lastname']);
+            $user->setPhone($fakeUser['phone']);
 
-        $manager->persist($user);
+            if (!$fakeUser['tokenDate']) {
+                $user->resetPasswordTokenProcess($fakeUser['token']);
+            } else {
+                $user->setResetPasswordToken($fakeUser['token']);
+                $user->setResetPasswordTokenValidityDate($fakeUser['tokenDate']);
+            }
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
 }
