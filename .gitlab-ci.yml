@@ -7,41 +7,39 @@ cache:
   paths:
   - vendor/
 
-before_script:
-# SSH
-  - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY_STAGING" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  
-# Composer
-  - curl -sS https://getcomposer.org/installer | php
-
-# Composer
-  - apt-get update -yqq
-  - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
-  - docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
-  - php composer.phar install
-
 stages:
   - test
-#   - build
   - deploy
 
 test:
+  before_script:
+    - curl -sS https://getcomposer.org/installer | php
+    - apt-get update -yqq
+    - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev unzip
+    - docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
+    - pecl install xdebug
+    - docker-php-ext-enable xdebug
+
   script:
     - echo "Running tests"
+    - php composer.phar install
+    - touch .env && echo -e $ENV_TEST_FILE >> .env
     - php ./bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
+
+  before_script:
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_STAGING" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - touch .env && echo -e $ENV_STAGING_FILE >> .env
+
   script:
     - echo "Deploy to staging server"
-    - touch .env && echo -e $ENV_STAGING_FILE >> .env
     - > 
       ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 
       'cd staging.adriendesmet.com/ &&
