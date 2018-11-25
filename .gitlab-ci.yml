@@ -63,7 +63,7 @@ deploy_staging:
       cd fournieralice.com/ &&
       composer install --optimize-autoloader'
     - scp -P $STAGING_PORT .env $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
-    - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console doctrine:migrations:migrate'
+    - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console doctrine:migrations:migrate --env=prod'
 
   environment:
     name: STAGING
