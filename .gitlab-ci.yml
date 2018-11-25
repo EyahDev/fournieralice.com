@@ -34,6 +34,8 @@ test:
     - echo "Running tests"
     - php composer.phar install
     - touch .env && echo -e $ENV_TEST_FILE >> .env
+    - cat .env
+    - ls -l
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
     - php bin/console doctrine:migrations:migrate -e test
     - php bin/console doctrine:fixtures:load -e test
