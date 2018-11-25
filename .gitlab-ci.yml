@@ -33,7 +33,7 @@ test:
     - echo "Running tests"
     - php composer.phar install
     - touch .env && echo -e $ENV_TEST_FILE >> .env
-    - php bin/console doctrine:migrations:migrate
+    - php bin/console doctrine:migrations:migrate -v
     - php bin/console doctrine:fixtures:load
     - php bin/phpunit --coverage-text --colors=never tests/
 
