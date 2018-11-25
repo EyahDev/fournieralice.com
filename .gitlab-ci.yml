@@ -49,7 +49,7 @@ deploy_staging:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - touch .env && echo -e $ENV_STAGING_FILE >> .env
+    - touch .env.local && echo -e $ENV_STAGING_FILE >> .env.local
 
   script:
     - echo "Deploy to staging server"
@@ -62,8 +62,8 @@ deploy_staging:
       git clone https://gitlab.com/EyahDev/fournieralice.com.git &&
       cd fournieralice.com/ &&
       composer install --optimize-autoloader'
-    - scp -P $STAGING_PORT .env $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
-    - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console doctrine:migrations:migrate'
+    - scp -P $STAGING_PORT .env.local $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
+    - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT 'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console doctrine:migrations:migrate --env=prod'
 
   environment:
     name: STAGING
