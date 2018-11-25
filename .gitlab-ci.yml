@@ -13,7 +13,7 @@ stages:
 
 test:
   services:
-    - mysql:latest
+    - mysql:5.7.19
 
   variables:
     MYSQL_DATABASE: database
