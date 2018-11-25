@@ -49,8 +49,7 @@ deploy_staging:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - touch .env && echo -e $ENV_STAGING_FILE >> .env
-    - ls -al
+    - touch .env.local && echo -e $ENV_STAGING_FILE >> .env.local
 
   script:
     - echo "Deploy to staging server"
