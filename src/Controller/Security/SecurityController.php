@@ -5,7 +5,6 @@ namespace App\Controller\Security;
 use App\Entity\User;
 use App\Form\Type\Security\LostPasswordType;
 use App\Form\Type\Security\ResetPasswordType;
-use App\Services\Utils\TimeSetter;
 use App\Services\Utils\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,7 +102,6 @@ class SecurityController extends AbstractController
         if (!$user)     {
             throw new NotFoundHttpException('Cette page n\'existe pas');
         } elseif ($user && $user->getResetPasswordTokenValidityDate() < new \DateTime()) {
-
             return $this->render('security/invalid_token.html.twig');
         }
 

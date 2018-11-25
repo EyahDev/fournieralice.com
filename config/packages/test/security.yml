@@ -1,6 +1,5 @@
 security:
   encoders:
-
     App\Entity\User: { algorithm: bcrypt, cost: 4 }
 
   firewalls:
