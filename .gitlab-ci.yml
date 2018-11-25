@@ -34,10 +34,9 @@ test:
     - echo "Running tests"
     - php composer.phar install
     - touch .env && echo -e $ENV_TEST_FILE >> .env
-    - echo .env
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
-    - php bin/console doctrine:migrations:migrate --db-configuration
-    - php bin/console doctrine:fixtures:load
+    - php bin/console doctrine:migrations:migrate -e test
+    - php bin/console doctrine:fixtures:load -e test
     - php bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
