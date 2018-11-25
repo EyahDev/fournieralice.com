@@ -16,7 +16,7 @@ test:
     - mysql:latest
 
   variables:
-    MYSQL_DATABASE: alicefournier.test
+    MYSQL_DATABASE: fournieralice.test
     MYSQL_USER: runner
     MYSQL_ROOT_PASSWORD: password
     MYSQL_PASSWORD: password
