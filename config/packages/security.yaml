@@ -28,7 +28,7 @@ security:
                 path: /
 
             logout:
-                path: /logout
+                path: /administration/logout
                 target: /administration
 
             # activate different ways to authenticate
