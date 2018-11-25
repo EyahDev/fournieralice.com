@@ -17,6 +17,7 @@ test:
 
   variables:
     MYSQL_DATABASE: fournieralice.test
+    MYSQL_ROOT_PASSWORD: mysql
     MYSQL_HOST: localhost
 
   before_script:
