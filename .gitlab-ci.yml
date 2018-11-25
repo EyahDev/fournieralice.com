@@ -12,19 +12,32 @@ stages:
   - deploy
 
 test:
+  services:
+    - mysql:latest
+
+  variables:
+    MYSQL_DATABASE: database
+    MYSQL_USER: runner
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_PASSWORD: password
+
   before_script:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
-    - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev unzip
-    - docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
+    - apt-get install -yqq git unzip zlib1g-dev
+    - docker-php-ext-install pdo_mysql zip opcache
     - pecl install xdebug
     - docker-php-ext-enable xdebug
+
 
   script:
     - echo "Running tests"
     - php composer.phar install
-    - touch .env && echo -e $ENV_TEST_FILE >> .env
-    - php ./bin/phpunit --coverage-text --colors=never tests/
+    - touch .env.test && echo -e $ENV_TEST_FILE >> .env.test
+    - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
+    - php bin/console doctrine:migrations:migrate --env=test
+    - php bin/console doctrine:fixtures:load --env=test
+    - php bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
