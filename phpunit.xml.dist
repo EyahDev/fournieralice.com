@@ -9,14 +9,16 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
         <env name="APP_ENV" value="test" />
-        <env name="APP_SECRET" value="27960076459556347ea0b61e29ba524c" />
+        <env name="APP_DEBUG" value="1" />
+        <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="DATABASE_URL" value="mysql://root:@127.0.0.1/fournieralice.test" />
+        <!-- define your env variables for the test env here -->
     </php>
 
     <testsuites>
-        <testsuite name="Project">
+        <testsuite name="Project Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
@@ -24,18 +26,10 @@
     <filter>
         <whitelist>
             <directory>src</directory>
-            <exclude>
-                <directory>src/Migrations</directory>
-                <directory>src/DataFixtures</directory>
-            </exclude>
         </whitelist>
     </filter>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
-
-    <logging>
-        <log type="coverage-html" target="../coverage/" charset="UTF-8" yui="true" highlight="true"/>
-    </logging>
 </phpunit>

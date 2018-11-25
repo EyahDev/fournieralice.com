@@ -44,7 +44,14 @@ class AppFixtures extends Fixture
                 'lastname' => 'Doe',
                 'phone' => '0102030405',
                 'token' => 'b63339d02de3bb033866',
-                'tokenDate' => new \DateTime('2018-11-01 10:00:00')]
+                'tokenDate' => new \DateTime('2018-11-01 10:00:00')
+            ], ['username' => 'doe.doe@mail.com',
+                'password' => 'complexePassword123',
+                'firstname' => 'Doe',
+                'lastname' => 'Doe',
+                'phone' => '0102030405',
+                'token' => 'b63339d02de3cc033866',
+                'tokenDate' => null]
         ];
 
         foreach ($fakeUsers as $fakeUser) {

@@ -2,79 +2,81 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
+    /**
+     * Test d'accès à la page d'administration
+     * Test d'accès à la page d'administration lorsqu'on est déjà identifié
+     */
     public function testRouteAdministration() {
-
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration');
 
-        // Test du code HTTP
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-
-        // Test du contenu (bouton de connexion du formulaire)
         $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
 
-        /* Test de redirection si l'utilisateur est déjà authentifié */
+        // -----------------------------
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'jane.doe@mail.com',
+            'PHP_AUTH_USER' => 'john.doe@mail.com',
             'PHP_AUTH_PW'   => 'complexePassword123',
         ));
 
-        $crawler = $client->request('GET', '/administration');
+        $client->request('GET', '/administration');
+        $crawler = $client->followRedirect();
 
-        // Test du code HTTP
-        $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
-
-        // Test du contenu (redirection vers dashboard)
-        $this->assertSame(1, $crawler->filter('html:contains("dashboard")')->count());
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertSame(1, $crawler->filter('html:contains("Dashboard, bonjour")')->count());
     }
 
+    /**
+     * Test de connexion à la page d'administration avec de bon identifiants
+     * Test de connexion à la page d'administration avec de mauvais identifiants
+     */
     public function testLogInToAdministration() {
-        /* Test de connexion avec de bon identifiants */
+
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration');
 
         $form = $crawler->selectButton('login')->form();
-
-        $form['_username'] = 'jane.doe@mail.com';
+        $form['_username'] = 'john.doe@mail.com';
         $form['_password'] = 'complexePassword123';
 
-        dump(self::$container->get('doctrine')->getRepository(User::class)->findOneBy(['username' => "jane.doe@mail.com"]));
         $client->submit($form);
+
         $crawler = $client->followRedirect();
-        // Test du contenu (titre de la page)
+
         $this->assertSame(1, $crawler->filter('html:contains("Dashboard, bonjour")')->count());
 
-        /* Test de connexion avec de mauvais identifiants */
+        // -----------------------------
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration');
 
         $form = $crawler->selectButton('login')->form();
 
-        $form['_username'] = 'jane.doe@mail.com';
+        $form['_username'] = 'john.doe@mail.com';
         $form['_password'] = 'wrongComplexePassword123';
 
         $client->submit($form);
 
         $crawler = $client->followRedirect();
 
-        // Test du contenu (message d'erreurs concernant les identifiants)
         $this->assertSame(1, $crawler->filter('html:contains("Invalid credentials.")')->count());
     }
 
     /**
+     * Test d'accès à la page de demande de réinitialisation de son mot de passe
+     * Test de demande de réinitialisation de son mot de passe avec une adresse mail valide
+     * Test de demande de réinitialisation de son mot de passe avec une adresse mail invalide
+     *
      * @throws \Exception
      */
     public function testLostPassword() {
-        /* Test avec un email valide */
 
         $client = static::createClient();
 
@@ -89,8 +91,9 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("Email du mot de passe perdu")')->count());
 
+        // -----------------------------
         $form = $crawler->selectButton('Envoyer')
-            ->form(array('lost_password[email]' => 'jane.doe@mail.com'));
+            ->form(array('lost_password[email]' => 'doe.doe@mail.com'));
 
         $client->submit($form);
 
@@ -98,8 +101,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->assertSame(1, $crawler->filter('html:contains("Un email de réinitialisation de mot de passe vous a été envoyé.")')->count());
 
-        /* Test avec un email non valide */
-
+        // -----------------------------
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration');
@@ -121,10 +123,16 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
+     * Test d'accès à la page de reset d'un mot de passe avec un token valide mais une date de validité échue
+     * Test d'accès à la page de reset d'un mot de passe avec un token qui n'existe pas
+     * Test d'accès à la page de reset d'un mot de passe avec un token valide
+     * Test de réinitialisation du mot de passe
+     * Test de login après avoir changer son mot de passe
+     *
      * @throws \Exception
      */
     public function testResetPassword() {
-        /* Test avec un token valide mais avec un temps de validité écoulé */
+
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration/password/reset/b63339d02de3bb033866');
@@ -132,14 +140,14 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("Ce lien, n\'est plus valide.")')->count());
 
-        /* Test avec un token invalide */
+        // -----------------------------
         $client = static::createClient();
 
-        $client->request('GET', '/administration/password/reset/b63339d02de3cc033866');
+        $client->request('GET', '/administration/password/reset/b63339d02de3dd033866');
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
-        /* Test avec un token valide */
+        // -----------------------------
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration/password/reset/b63339d02de3aa033866');
@@ -147,7 +155,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("Réinitilisation de votre mot de passe")')->count());
 
-        /* Reset du mot de passe */
+        // -----------------------------
         $form = $crawler->selectButton('Enregistrer')
             ->form(array(
                 'reset_password[password][first]' => 'newComplexePassword123',
@@ -158,9 +166,19 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $client->followRedirect();
 
-        // Retour à la page de login
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
+
+        // -----------------------------
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'jane.doe@mail.com',
+            'PHP_AUTH_PW'   => 'newComplexePassword123',
+        ));
+
+        $crawler = $client->request('GET', '/administration/dashboard');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $this->assertSame(1, $crawler->filter('html:contains("Dashboard, bonjour")')->count());
 
     }
 }
