@@ -24,8 +24,8 @@ test:
   before_script:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
-    - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev unzip
-    - docker-php-ext-install mbstring mcrypt pdo_pgsql pdo_mysql curl json intl gd xml zip bz2 opcache
+    - apt-get install -yqq git unzip zlib1g-dev
+    - docker-php-ext-install pdo_mysql curl intl gd zip opcache
     - pecl install xdebug
     - docker-php-ext-enable xdebug
 
@@ -34,6 +34,7 @@ test:
     - echo "Running tests"
     - php composer.phar install
     - touch .env && echo -e $ENV_TEST_FILE >> .env
+    - nano .env
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
     - php bin/console doctrine:migrations:migrate --db-configuration
     - php bin/console doctrine:fixtures:load
