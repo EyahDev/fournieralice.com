@@ -55,7 +55,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()['email'];
 
-            $user = $em->getRepository(User::class)->findOneBy(['username' => $email]);
+            $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
 
             if ($user) {
 

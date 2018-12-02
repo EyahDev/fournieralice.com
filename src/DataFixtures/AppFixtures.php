@@ -30,50 +30,55 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // Création d'utilisateurs fictifs
-        $fakeUsers = [['username' => 'jane.doe@mail.com',
-                'password' => 'complexePassword123',
-                'firstname' => 'Jane',
-                'lastname' => 'Doe',
-                'phone' => '0102030405',
-                'token' => 'b63339d02de3aa033866',
-                'tokenDate' => null
-            ], ['username' => 'john.doe@mail.com',
-                'password' => 'complexePassword123',
-                'firstname' => 'John',
-                'lastname' => 'Doe',
-                'phone' => '0102030405',
-                'token' => 'b63339d02de3bb033866',
-                'tokenDate' => new \DateTime('2018-11-01 10:00:00')
-            ], ['username' => 'doe.doe@mail.com',
-                'password' => 'complexePassword123',
-                'firstname' => 'Doe',
-                'lastname' => 'Doe',
-                'phone' => '0102030405',
-                'token' => 'b63339d02de3cc033866',
-                'tokenDate' => null]
-        ];
+        $this->loadUsers($manager);
+    }
 
-        foreach ($fakeUsers as $fakeUser) {
+    /**
+     * Jane Doe : Uniquement utitilisé pour la réinitialisation du mot de passe après oubli
+     * John Doe : Utilisé pour la modification des informations personnelles
+     * Harry Potter : Utilisé pour toutes les autres actions
+     *
+     * @return array
+     */
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    private function getUserData()
+    {
+        return [
+            // $userData = [$email, $password, $firstname, $lastname, $phone, $token, $validityToken];
+            ['jane.doe@mail.com', 'complexePassword123', 'Jane', 'Doe', '0102030405', "b63339d02de3aa033866", null],
+            ['john.doe@mail.com', 'complexePassword123', 'john', 'Doe', '0102030405', "b63339d02de3bb033866", new \DateTime('2018-11-01 10:00:00')],
+            ['harry.potter@hogwarts.com', 'complexePassword123', 'Harry', 'Potter', '0102030405', null, null],
+        ];
+    }
+
+    /**
+     * @param ObjectManager $manager
+     * @throws \Exception
+     */
+    public function loadUsers(ObjectManager $manager) {
+        foreach ($this->getUserData() as [$email, $password, $firstname, $lastname, $phone, $token, $validityToken]) {
             $user = new User();
 
-            $password = $this->encoder->encodePassword($user, $fakeUser['password']);
+            $user->setEmail($email);
+            $user->setPassword($this->encoder->encodePassword($user, $password));
+            $user->setFirstname($firstname);
+            $user->setLastname($lastname);
+            $user->setPhone($phone);
 
-            $user->setUsername($fakeUser['username']);
-            $user->setPassword($password);
-            $user->setFirstname($fakeUser['firstname']);
-            $user->setLastname($fakeUser['lastname']);
-            $user->setPhone($fakeUser['phone']);
-
-            if (!$fakeUser['tokenDate']) {
-                $user->resetPasswordTokenProcess($fakeUser['token']);
+            if ($token && !$validityToken) {
+                $user->resetPasswordTokenProcess($token);
             } else {
-                $user->setResetPasswordToken($fakeUser['token']);
-                $user->setResetPasswordTokenValidityDate($fakeUser['tokenDate']);
+                $user->setResetPasswordToken($token);
+                $user->setResetPasswordTokenValidityDate($validityToken);
             }
-            $manager->persist($user);
-        }
 
+            $manager->persist($user);
+            $this->addReference($email, $user);
+        }
         $manager->flush();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controller\Administration;
 
 use App\Entity\User;
 use App\Form\Type\User\ChangePasswordType;
+use App\Form\Type\User\EditInformationsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +17,34 @@ class UserController extends AbstractController
      *
      * @Route(name="userInformations", path="/administration/user/informations")
      */
-    public function editInformations()
+    public function editInformations(Request $request)
     {
-        return $this->render('administration/user/informations.html.twig');
+        $user = $this->getUser();
+
+        $oldEmail = $user->getUsername();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(EditInformationsType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('confirm', 'Vos informations personnelles ont été mises à jour');
+
+            if ($oldEmail !== $user->getUsername()) {
+                return $this->redirectToRoute('logout');
+            }
+
+            return $this->redirectToRoute('userInformations');
+        }
+
+        return $this->render('administration/user/informations.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     /**
@@ -53,7 +79,7 @@ class UserController extends AbstractController
 
             $this->addFlash('confirm', 'Votre mot de passe a été modifié');
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('changePassword');
         }
 
         return $this->render('administration/user/password.html.twig', array(

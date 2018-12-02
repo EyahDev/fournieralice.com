@@ -2,4 +2,10 @@
 
 {% block body %}
     <p>Vos informations</p>
+    {% for label, messages in app.flashes  %}
+        {% for message in messages  %}
+            <p>{{ label }} : {{ message }}</p>
+        {% endfor %}
+    {% endfor %}
+    {{ form(form) }}
 {% endblock %}

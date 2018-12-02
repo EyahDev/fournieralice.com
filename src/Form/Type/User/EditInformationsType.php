@@ -14,7 +14,7 @@ class EditInformationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', EmailType::class, array(
+            ->add('email', EmailType::class, array(
             'label' => 'Adresse mail du compte'
             ))
             ->add('firstname', TextType::class, array(
@@ -22,6 +22,9 @@ class EditInformationsType extends AbstractType
             ))
             ->add('lastname', TextType::class, array(
                 'label' => 'Votre nom'
+            ))
+            ->add('phone', TextType::class, array(
+                'label' => 'Numéro de téléphone'
             ))
             ->add('submit', SubmitType::class, array(
             'label' => 'Enregistrer'

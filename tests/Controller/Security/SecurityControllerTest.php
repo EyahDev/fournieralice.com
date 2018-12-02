@@ -8,31 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 class SecurityControllerTest extends WebTestCase
 {
     /**
-     * Test d'accès à la page d'administration
-     * Test d'accès à la page d'administration lorsqu'on est déjà identifié
-     */
-    public function testRouteAdministration() {
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/administration');
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
-
-        // -----------------------------
-        $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'john.doe@mail.com',
-            'PHP_AUTH_PW'   => 'complexePassword123',
-        ));
-
-        $client->request('GET', '/administration');
-        $crawler = $client->followRedirect();
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->filter('html:contains("Dashboard, bonjour")')->count());
-    }
-
-    /**
      * Test de connexion à la page d'administration avec de bon identifiants
      * Test de connexion à la page d'administration avec de mauvais identifiants
      */
@@ -43,7 +18,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/administration');
 
         $form = $crawler->selectButton('login')->form();
-        $form['_username'] = 'john.doe@mail.com';
+        $form['_username'] = 'harry.potter@hogwarts.com';
         $form['_password'] = 'complexePassword123';
 
         $client->submit($form);
@@ -59,8 +34,8 @@ class SecurityControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('login')->form();
 
-        $form['_username'] = 'john.doe@mail.com';
-        $form['_password'] = 'wrongComplexePassword123';
+        $form['_username'] = 'harry.potter@hogwarts.com';
+        $form['_password'] = 'wrongPassword123';
 
         $client->submit($form);
 
@@ -93,7 +68,7 @@ class SecurityControllerTest extends WebTestCase
 
         // -----------------------------
         $form = $crawler->selectButton('Envoyer')
-            ->form(array('lost_password[email]' => 'doe.doe@mail.com'));
+            ->form(array('lost_password[email]' => 'harry.potter@hogwarts.com'));
 
         $client->submit($form);
 
@@ -143,7 +118,7 @@ class SecurityControllerTest extends WebTestCase
         // -----------------------------
         $client = static::createClient();
 
-        $client->request('GET', '/administration/password/reset/b63339d02de3dd033866');
+        $client->request('GET', '/administration/password/reset/tokenDoNotExist');
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
@@ -153,6 +128,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/administration/password/reset/b63339d02de3aa033866');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        dump($crawler);
         $this->assertSame(1, $crawler->filter('html:contains("Réinitilisation de votre mot de passe")')->count());
 
         // -----------------------------

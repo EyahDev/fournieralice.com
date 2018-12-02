@@ -6,7 +6,7 @@ security:
 
     providers:
         app_user:
-            entity: { class: App\Entity\User, property: username }
+            entity: { class: App\Entity\User, property: email }
 
     firewalls:
         dev:

@@ -19,9 +19,9 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
-    private $username;
+    private $email;
 
     /**
      * @ORM\Column(name="password", type="string", length=255)
@@ -64,18 +64,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return null|string
      */
-    public function getUsername(): ?string
+    public function getEmail(): ?string
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
-     * @param string $username
+     * @param string $email
      * @return User
      */
-    public function setUsername(string $username): self
+    public function setEmail(string $email): self
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
@@ -207,7 +207,7 @@ class User implements UserInterface, \Serializable
     {
         return serialize(array(
             $this->id,
-            $this->username,
+            $this->email,
             $this->password
         ));
     }
@@ -219,7 +219,7 @@ class User implements UserInterface, \Serializable
     {
         list(
             $this->id,
-            $this->username,
+            $this->email,
             $this->password,
             ) = unserialize($serialized, array('allowed_classes' => false));
     }
@@ -241,4 +241,12 @@ class User implements UserInterface, \Serializable
     }
 
     public function eraseCredentials() {}
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
 }
