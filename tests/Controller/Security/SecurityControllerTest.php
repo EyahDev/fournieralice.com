@@ -18,7 +18,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/administration');
 
         $form = $crawler->selectButton('login')->form();
-        $form['_username'] = 'harry.potter@hogwarts.com';
+        $form['_username'] = 'harry.potter@mail.com';
         $form['_password'] = 'complexePassword123';
 
         $client->submit($form);
@@ -34,7 +34,7 @@ class SecurityControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('login')->form();
 
-        $form['_username'] = 'harry.potter@hogwarts.com';
+        $form['_username'] = 'harry.potter@mail.com';
         $form['_password'] = 'wrongPassword123';
 
         $client->submit($form);
@@ -68,7 +68,7 @@ class SecurityControllerTest extends WebTestCase
 
         // -----------------------------
         $form = $crawler->selectButton('Envoyer')
-            ->form(array('lost_password[email]' => 'harry.potter@hogwarts.com'));
+            ->form(array('lost_password[email]' => 'harry.potter@mail.com'));
 
         $client->submit($form);
 
@@ -128,7 +128,6 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/administration/password/reset/b63339d02de3aa033866');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        dump($crawler);
         $this->assertSame(1, $crawler->filter('html:contains("Réinitilisation de votre mot de passe")')->count());
 
         // -----------------------------

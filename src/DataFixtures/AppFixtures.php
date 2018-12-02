@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
             // $userData = [$email, $password, $firstname, $lastname, $phone, $token, $validityToken];
             ['jane.doe@mail.com', 'complexePassword123', 'Jane', 'Doe', '0102030405', "b63339d02de3aa033866", null],
             ['john.doe@mail.com', 'complexePassword123', 'john', 'Doe', '0102030405', "b63339d02de3bb033866", new \DateTime('2018-11-01 10:00:00')],
-            ['harry.potter@hogwarts.com', 'complexePassword123', 'Harry', 'Potter', '0102030405', null, null],
+            ['harry.potter@mail.com', 'complexePassword123', 'Harry', 'Potter', '0102030405', null, null],
         ];
     }
 

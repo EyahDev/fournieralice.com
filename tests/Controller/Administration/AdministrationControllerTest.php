@@ -21,7 +21,7 @@ class AdministrationControllerTest extends WebTestCase
 
         // -----------------------------
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'harry.potter@hogwarts.com',
+            'PHP_AUTH_USER' => 'harry.potter@mail.com',
             'PHP_AUTH_PW'   => 'complexePassword123',
         ));
 

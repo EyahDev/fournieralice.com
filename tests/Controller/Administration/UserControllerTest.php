@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserControllerTest extends WebTestCase
@@ -103,11 +104,13 @@ class UserControllerTest extends WebTestCase
 
         $client->submit($form);
 
-        $this->assertTrue($client->getResponse()->isRedirection());
-
-        $crawler = $client->followRedirect();
-
-        $this->assertSame(1, $crawler->filter('html:contains("administration")')->count());
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
+        $this->assertSame(
+            '/administration/logout',
+            $response->getTargetUrl(),
+            'Changer l\'adresse email deconnecté l\'utilisateur'
+        );
     }
 
     /**
@@ -125,6 +128,32 @@ class UserControllerTest extends WebTestCase
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSame(1, $crawler->filter('html:contains("Modification de votre mot de passe")')->count());
+
+        $form = $crawler->selectButton('Enregistrer')->form();
+
+        $form['change_password[oldPassword]'] = 'wrongComplexePassword123';
+        $form['change_password[newPassword][first]'] = 'newComplexePassword123';
+        $form['change_password[newPassword][second]'] = 'newComplexePassword123';
+
+        $client->submit($form);
+
+        $crawler = $client->getCrawler();
+
+        $this->assertSame(1, $crawler->filter('html:contains("Votre ancien mot de passe n\'est pas valide")')->count());
+
+
+        $form = $crawler->selectButton('Enregistrer')->form();
+
+        $form['change_password[oldPassword]'] = 'complexePassword123';
+        $form['change_password[newPassword][first]'] = 'wrongNewComplexePassword123';
+        $form['change_password[newPassword][second]'] = 'newComplexePassword123';
+
+        $client->submit($form);
+
+        $crawler = $client->getCrawler();
+
+        $this->assertSame(1, $crawler->filter('html:contains("Les mots de passe ne correspondent pas")')->count());
+
 
         $form = $crawler->selectButton('Enregistrer')->form();
 
