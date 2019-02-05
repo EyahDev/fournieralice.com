@@ -13,9 +13,12 @@
     </title>
 </head>
 <body>
-    {% block body %}
-    {% endblock %}
+    <div id="app">
+        {% block body %}
+        {% endblock %}
+    </div>
 </body>
 {% block javascripts %}
 {% endblock %}
+<script src="{{ asset('build/js/app.js') }}"></script>
 </html>

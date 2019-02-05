@@ -1,0 +1,32 @@
+{
+  "name": "alicefournier-portfolio",
+  "version": "1.0.0",
+  "description": "Porfolio for Alice Fournier",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/EyahDev/fournieralice.com.git"
+  },
+  "author": "Adrien Desmet @EyahDev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/EyahDev/fournieralice.com/issues"
+  },
+  "homepage": "https://gitlab.com/EyahDev/fournieralice.com#readme",
+  "dependencies": {
+    "css-loader": "^2.1.0",
+    "jquery": "^3.3.1",
+    "style-loader": "^0.23.1",
+    "vue": "^2.6.2",
+    "webpack": "^4.29.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.2.3"
+  }
+}
