@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var VueLoaderPlugin = require('vue-loader/lib/plugin');
+
 module.exports = {
     entry: './src/Assets/js/app.js',
     output: {
@@ -28,5 +30,6 @@ module.exports = {
             jQuery: "jquery",
             jquery: "jquery",
         }),
+        new VueLoaderPlugin()
     ]
 };
