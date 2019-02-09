@@ -1,10 +1,7 @@
 <template>
     <div>
         <div>
-            qqsdqsdqsd
-            <p>
-                Coucouqsdqsdqsdqsd
-            </p>
+            <p>ceci est du vue.js</p>
         </div>
     </div>
 </template>

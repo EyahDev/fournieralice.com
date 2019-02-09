@@ -11,3 +11,5 @@ Vue.component('login', login);
 new Vue({
     el: '#app',
 });
+
+console.log($('#app'));
