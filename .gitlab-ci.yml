@@ -65,7 +65,7 @@ deploy_staging:
     - scp -P $STAGING_PORT .env.local $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
     - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT
       'cd staging.adriendesmet.com/fournieralice.com/ &&
-      npm install && npx webpack encore prod &&
+      npm install && npm run webpack encore prod &&
       php bin/console doctrine:migrations:migrate --env=prod'
 
   environment:
@@ -74,7 +74,6 @@ deploy_staging:
 
   only:
     - dev
-    - front-tools
   
 #deploy_prod:
 #  stage: deploy
