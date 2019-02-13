@@ -1,0 +1,8 @@
+{
+    "fr.messages": {
+        "welcome" : "Bienvenue :pseudo"
+    },
+    "en.messages": {
+        "welcome" : "Welcome :pseudo"
+    }
+}
