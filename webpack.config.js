@@ -4,8 +4,8 @@ encore
     .configureFilenames({
         js: 'js/[name].js',
         css: 'css/[name].css',
-        images: 'img/[name].css',
-        fonts: 'fonts/[name].css'
+        images: 'img/[name].[ext]',
+        fonts: 'fonts/[name].[ext]'
     })
 
     .setOutputPath('public/build')
@@ -20,6 +20,14 @@ encore
 
     .addEntry('app', './src/Assets/js/app.js')
     .enableVueLoader()
+    .addLoader({
+        test: /\.scss$/,
+        use: [
+            "style-loader", // creates style nodes from JS strings
+            "css-loader", // translates CSS into CommonJS
+            "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
+    })
 
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild();

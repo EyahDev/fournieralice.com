@@ -25,11 +25,14 @@
     "css-loader": "^2.1.0",
     "file-loader": "^3.0.1",
     "jquery": "^3.3.1",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "uikit": "^3.0.3",
     "url-loader": "^1.1.2",
-    "vue": "^2.6.4",
+    "vue": "^2.6.6",
     "vue-loader": "^15.6.2",
-    "vue-template-compiler": "^2.6.4"
+    "vue-template-compiler": "^2.6.6"
   },
   "devDependencies": {}
 }

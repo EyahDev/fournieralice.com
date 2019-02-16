@@ -1,3 +1,12 @@
+/* Imports le JS d'UIKit  */
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+
+UIkit.use(Icons);
+
+/* Imports CSS */
+import '../css/app.scss'
+
 /* Import vue */
 import Vue from 'vue';
 
@@ -11,5 +20,3 @@ Vue.component('login', login);
 new Vue({
     el: '#app',
 });
-
-console.log($('#app'));
