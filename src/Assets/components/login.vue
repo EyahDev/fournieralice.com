@@ -1,8 +1,9 @@
 <template>
     <div>
         <div>
-            <button @click="changeLang">Changer de langue</button>
+            <button @click="changeLang()">Changer de langue</button>
             <p>ceci est du vue.js</p>
+            <p>{{ "welcome.name"|trans({'%name%': pseudo}, "workend") }}</p>
             <p>{{ 'messages.welcome' | trans({'pseudo': pseudo}) }}</p>
         </div>
     </div>
@@ -16,18 +17,5 @@
                 pseudo: 'Bad_Dev'
             }
         },
-        methods: {
-            changeLang(){
-                if(this.translation.getLocale() === 'fr'){
-                    this.translation.setLocale('en');
-                }else{
-                    this.translation.setLocale('fr');
-                }
-            }
-        },
     }
 </script>
-
-<style scoped>
-
-</style>

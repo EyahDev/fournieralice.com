@@ -2,7 +2,7 @@
 .env.local
 .env.test
 ###< config files ###
-
+.idea/
 ###> phpunit files ###
 .phpunit
 /phpunit.xml
