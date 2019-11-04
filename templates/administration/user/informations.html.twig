@@ -1,12 +1,11 @@
 {% extends 'base/base.html.twig' %}
 
 {% block body %}
+    <p>Vos informations</p>
     {% for label, messages in app.flashes  %}
         {% for message in messages  %}
             <p>{{ label }} : {{ message }}</p>
         {% endfor %}
     {% endfor %}
-    <p>Dashboard, bonjour {{ app.user.firstname }}</p>
-    <p><a href="{{ path('userInformations') }}">Editer mes informations</a></p>
-    <p><a href="{{ path('changePassword') }}">Changer mon mot de passe</a></p>
+    {{ form(form) }}
 {% endblock %}

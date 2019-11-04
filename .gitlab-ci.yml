@@ -29,7 +29,6 @@ test:
     - pecl install xdebug
     - docker-php-ext-enable xdebug
 
-
   script:
     - echo "Running tests"
     - php composer.phar install
