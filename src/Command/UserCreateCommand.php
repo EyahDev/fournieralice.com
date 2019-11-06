@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use App\Entity\User;
@@ -30,15 +29,20 @@ class UserCreateCommand extends Command
     private $em;
 
     /**
+     * @var SymfonyStyle
+     */
+    private $io;
+
+    /**
      * UserCreateCommand constructor.
      * @param UserPasswordEncoderInterface $encoder
      * @param EntityManagerInterface $em
      */
     public function __construct(UserPasswordEncoderInterface $encoder, EntityManagerInterface $em)
     {
-      $this->encoder = $encoder;
-      $this->em = $em;
-      parent::__construct();
+        parent::__construct();
+        $this->encoder = $encoder;
+        $this->em = $em;
     }
 
     /**
@@ -47,9 +51,58 @@ class UserCreateCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Creates a new user.')
-            ->setHelp('This command allows you to create a user...')
-        ;
+            ->setDescription("Créer un utilisateur et l'insère en base de données")
+            ->addArgument('email', InputArgument::REQUIRED, "Email de l'utilisateur")
+            ->addArgument('password', InputArgument::REQUIRED, "Mot de passe de l'utilisateur")
+            ->addArgument('firstname', InputArgument::REQUIRED, "Prénom de l'utilisateur")
+            ->addArgument('lastname', InputArgument::REQUIRED, "Nom de l'utilisateur")
+            ->addArgument('phone', InputArgument::OPTIONAL, "Phone de l'utilisateur", '0601020304');
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        $this->io->title("Ajout d'un utilisateur");
+
+        /* ARGUMENTS */
+        $username = $input->getArgument('email');
+        $password = $input->getArgument('password');
+        $firstname = $input->getArgument('firstname');
+        $lastname = $input->getArgument('lastname');
+        $phone = $input->getArgument('phone');
+
+        /* PROCESS */
+        if (null !== $username) {
+            $this->io->text(' > <info>Email de l\'utilisateur</info> : ' . $username);
+        }
+
+        if (null !== $password) {
+            $this->io->text(' > <info>Mot de passe de l\'utilisateur</info> : '.str_repeat('*', mb_strlen($password)));
+        }
+
+        if (null !== $firstname) {
+            $this->io->text(' > <info>Prénom de l\'utilisateur</info> : ' . $firstname);
+        }
+
+        if (null !== $lastname) {
+            $this->io->text(' > <info>Nom de l\'utilisateur</info> : ' . $lastname);
+        }
+
+        if (null !== $phone) {
+            $this->io->text(' > <info>Téléphone de l\'utilisateur</info> : '.$phone);
+        }
     }
 
     /**
@@ -59,45 +112,11 @@ class UserCreateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-
-        $io->title('Création d\'un utilisateur');
-
-        $username = $io->ask('Adresse mail de l\'utilisateur', null, function($username) {
-            if(empty($username)) {
-              throw new \RuntimeException('Il faut obligatoirement une adresse mail !');
-            }
-
-            return $username;
-        });
-
-        $firstname = $io->ask('Prénom de l\'utilisateur', null, function($firstname) {
-            if(empty($firstname)) {
-                throw new \RuntimeException('Il faut obligatoirement une adresse mail !');
-            }
-
-            return $firstname;
-        });
-
-        $lastname = $io->ask('Nom de l\'utilisateur', null, function($lastname) {
-            if(empty($lastname)) {
-                throw new \RuntimeException('Il faut obligatoirement une adresse mail !');
-            }
-
-            return $lastname;
-        });
-
-        $phone = $io->ask('Téléphone de l\'utilisateur', "0601020304", function($phone) {
-            return $phone;
-        });
-
-        $password = $io->askHidden('Mot de passe de l\'utilisateur', function ($password) {
-            if (empty($password)) {
-                throw new \RuntimeException('Il faut obligatoirement un mot de passe !');
-            }
-
-            return $password;
-        });
+        $username = $input->getArgument('email');
+        $password = $input->getArgument('password');
+        $firstname = $input->getArgument('firstname');
+        $lastname = $input->getArgument('lastname');
+        $phone = $input->getArgument('phone');
 
         $user = new User();
         $user->setEmail($username);
@@ -111,6 +130,6 @@ class UserCreateCommand extends Command
         $this->em->persist($user);
         $this->em->flush();
 
-        $io->success("L'utilisateur $firstname $lastname a bien été créé");
+        $this->io->success("L'utilisateur $firstname $lastname a bien été créé");
     }
 }
