@@ -3,9 +3,9 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
-use App\Form\Type\Security\lostPasswordType;
-use App\Form\Type\Security\resetPasswordType;
-use App\Services\Utils\TokenGeneratorService;
+use App\Form\Type\Security\LostPasswordType;
+use App\Form\Type\Security\ResetPasswordType;
+use App\Services\Utils\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,15 +39,15 @@ class SecurityController extends AbstractController
     /**
      * @param Request $request
      * @param \Swift_Mailer $mailer
-     * @param TokenGeneratorService $tokenGenerator
+     * @param TokenGenerator $tokenGenerator
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      *
      * @Route(name="lostPassword", path="/administration/password/lost")
      */
-    public function lostPassword(Request $request, \Swift_Mailer $mailer, TokenGeneratorService $tokenGenerator)
+    public function lostPassword(Request $request, \Swift_Mailer $mailer, TokenGenerator $tokenGenerator)
     {
-        $form = $this->createForm(lostPasswordType::class);
+        $form = $this->createForm(LostPasswordType::class);
         $em = $this->getDoctrine();
 
         $form->handleRequest($request);
@@ -55,9 +55,10 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()['email'];
 
-            $user = $em->getRepository(User::class)->findOneBy(['username' => $email]);
+            $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
 
             if ($user) {
+
                 $token = $tokenGenerator->generateRandomToken(10);
 
                 $user->resetPasswordTokenProcess($token);
@@ -88,6 +89,7 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      *
      * @Route(name="resetPassword", path="/administration/password/reset/{token}")
      */
@@ -97,18 +99,20 @@ class SecurityController extends AbstractController
 
         $user = $em->getRepository(User::class)->findOneBy(['resetPasswordToken' => $token]);
 
-        if (!$user) {
+        if (!$user)     {
             throw new NotFoundHttpException('Cette page n\'existe pas');
         } elseif ($user && $user->getResetPasswordTokenValidityDate() < new \DateTime()) {
             return $this->render('security/invalid_token.html.twig');
         }
 
-        $form = $this->createForm(resetPasswordType::class);
+        $form = $this->createForm(ResetPasswordType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($form->get('password')->getData(), $encoder);
+            $encodedPassword = $encoder->encodePassword($user, $form->get('password')->getData());
+
+            $user->setPassword($encodedPassword);
             $user->setResetPasswordTokenValidityDate(null);
             $user->setResetPasswordToken(null);
 
