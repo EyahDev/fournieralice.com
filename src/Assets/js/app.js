@@ -1,29 +1,5 @@
 /* Import vue */
 import Vue from 'vue';
-/* Importation des traductions */
-import Lang from 'lang.js';
-import translations from './translations';
-var lang = new Lang({
-    locale: 'fr',
-});
-lang.setLocale('fr');
-lang.setMessages(translations);
-
-Vue.filter('trans', (...args) => {
-    return lang.get(...args);
-});
-
-Vue.mixin({
-    data: function() {
-        return {
-            get translation() {
-                return lang;
-            }
-        }
-    }
-});
-
-
 
 var VueCookie = require('vue-cookie');
 // Tell Vue to use the plugin
