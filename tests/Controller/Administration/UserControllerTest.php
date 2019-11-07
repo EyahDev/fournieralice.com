@@ -59,7 +59,7 @@ class UserControllerTest extends WebTestCase
     }
 
     /*
-     * Test du changement de nom avec confirmation
+     * Test du changement de téléphone avec confirmation
      */
     public function testChangeUserPhone() {
 

@@ -62,6 +62,14 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
      * @return null|string
      */
     public function getEmail(): ?string
@@ -241,12 +249,4 @@ class User implements UserInterface, \Serializable
     }
 
     public function eraseCredentials() {}
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->email;
-    }
 }
