@@ -2,7 +2,7 @@
 .env.local
 .env.test
 ###< config files ###
-
+.idea/
 ###> phpunit files ###
 .phpunit
 /phpunit.xml
@@ -15,3 +15,14 @@
 node_modules/
 ###< application files ###
 
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###

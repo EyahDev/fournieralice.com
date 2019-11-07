@@ -41,7 +41,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('html:contains("Invalid credentials.")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("Identifiants invalides.")')->count());
     }
 
     /**

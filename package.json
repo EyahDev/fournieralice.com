@@ -7,8 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "encore-dev": "encore dev",
-    "encore-prod": "encore prod"
+    "dev": "encore dev",
+    "dev:watch": "encore dev --watch",
+    "prod": "encore prod"
   },
   "repository": {
     "type": "git",
@@ -24,10 +25,12 @@
     "@symfony/webpack-encore": "^0.23.0",
     "css-loader": "^2.1.0",
     "file-loader": "^3.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
+    "lang.js": "^1.1.14",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "vue": "^2.6.4",
+    "vue-cookie": "^1.1.4",
     "vue-loader": "^15.6.2",
     "vue-template-compiler": "^2.6.4"
   },
