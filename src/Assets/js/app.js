@@ -1,16 +1,26 @@
+/* Imports le JS d'UIKit  */
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+
+UIkit.use(Icons);
+
+/* Imports CSS */
+import '../css/app.scss'
+
 /* Import vue */
 import Vue from 'vue';
 
-var VueCookie = require('vue-cookie');
-// Tell Vue to use the plugin
+let VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
+
 /* Importation des traductions */
 import Lang from 'lang.js';
 import translations from './translations';
 
-var lang = new Lang({
+let lang = new Lang({
     locale: 'fr',
 });
+
 lang.setLocale(getLocale());
 lang.setMessages(translations);
 
@@ -52,9 +62,8 @@ function getLocale() {
     return 'fr'
 }
 
-
 /* Import des composants vue */
-import login from '../components/login.vue';
+import login from  '../components/login.vue';
 
 /* Chargement des composants vue */
 Vue.component('login', login);
