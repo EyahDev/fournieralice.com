@@ -6,6 +6,7 @@
             <p>{{ label }} : {{ message }}</p>
         {% endfor %}
     {% endfor %}
+
     <p>Dashboard, bonjour {{ app.user.firstname }}</p>
     <p><a href="{{ path('userInformations') }}">Editer mes informations</a></p>
     <p><a href="{{ path('changePassword') }}">Changer mon mot de passe</a></p>

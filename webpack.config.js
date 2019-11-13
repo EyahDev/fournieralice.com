@@ -1,4 +1,4 @@
-var encore = require('@symfony/webpack-encore');
+let encore = require('@symfony/webpack-encore');
 
 encore
     .configureFilenames({
@@ -22,7 +22,7 @@ encore
     .enableVueLoader()
 
     .addLoader({
-        test: /\.scss$/,
+        test: /\.s[ac]ss$/i,
         use: [
             "style-loader",
             "css-loader",
