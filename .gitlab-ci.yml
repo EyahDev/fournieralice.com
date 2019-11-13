@@ -62,7 +62,7 @@ deploy_staging:
     - scp -P $STAGING_PORT .env.local $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
     - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT
       'cd staging.adriendesmet.com/fournieralice.com/ &&
-      /opt/alt/alt-nodejs8/root/usr/bin/npm install && /opt/alt/alt-nodejs8/root/usr/bin/npm run prod --scripts-prepend-node-path &&
+      /opt/alt/alt-nodejs8/root/usr/bin/npm install --scripts-prepend-node-path && /opt/alt/alt-nodejs8/root/usr/bin/npm run prod --scripts-prepend-node-path &&
       php bin/console doctrine:migrations:migrate --env=prod'
 
   environment:
