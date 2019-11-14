@@ -5,18 +5,62 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('administration') }}" method="post">
-        <label for="username">Email</label>
-        <input type="text" id="username" name="_username" value="{{ lastUsername }}" />
+    <div class="uk-flex uk-flex-center">
+        <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s">
+            <div class="uk-card uk-card-default uk-card-body login-card">
+                <h3 class="uk-card-title">Connexion à l'administration</h3>
 
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="_password" />
+                <form action="{{ path('administration') }}" method="post">
+                    <div class="uk-margin">
+                        <div class="uk-inline uk-width-1-1">
+                            <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: user"></span>
+                            <input class="uk-input" type="text" id="username" name="_username" placeholder="Adresse email" value="{{ lastUsername }}" >
+                        </div>
 
-        <input type="checkbox" class="filled-in" id="remember_me" name="_remember_me" />
-        <label for="remember_me">Se souvenir de moi</label><br/>
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-1-1">
+                                <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+                                <input class="uk-input" type="password" id="password" placeholder="Mot de passe" name="_password">
+                            </div>
+                        </div>
 
-        <button type="submit">login</button>
-    </form>
+                        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                            <label><input class="uk-checkbox" type="checkbox"> Garder la connexion active</label>
+                        </div>
 
-    <a href="{{ path('lostPassword') }}">Mot de passe perdu ? </a>
+                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" type="submit">Connexion</button>
+                    </div>
+                </form>
+
+                <a href="{{ path('lostPassword') }}">Mot de passe perdu ? </a>
+            </div>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .login {
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .login-card {
+            margin: 5px;
+            border-radius: 4px;
+        }
+
+        .uk-card-title {
+            margin-bottom: 50px;
+        }
+
+        .uk-button-primary {
+            /*background-color: #35a533 !important;*/
+        }
+    </style>
 {% endblock %}

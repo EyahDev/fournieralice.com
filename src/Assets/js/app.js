@@ -7,6 +7,11 @@ UIkit.use(Icons);
 /* Imports CSS */
 import '../css/app.scss'
 
+/* Imports de ParticlesJS */
+import 'particles.js'
+
+particlesJS.load('particles-js', '../particles.json', function() {});
+
 /* Import vue */
 import Vue from 'vue';
 
