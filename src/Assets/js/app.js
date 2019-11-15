@@ -63,9 +63,11 @@ function getLocale() {
 }
 
 /* Import des composants vue */
+import Editor from '@tinymce/tinymce-vue'
 import login from  '../components/login.vue';
 
 /* Chargement des composants vue */
+Vue.component('editor', Editor);
 Vue.component('login', login);
 
 /* Rendu vue */
