@@ -3,6 +3,7 @@
 .env.test
 ###< config files ###
 .idea/
+.ftpconfig
 ###> phpunit files ###
 .phpunit
 /phpunit.xml

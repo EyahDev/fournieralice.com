@@ -1,0 +1,11 @@
+{% extends 'base/base.html.twig' %}
+
+{% block body %}
+    <h2>News</h2>
+    {% for new in news  %}
+        <p><strong>Titre:</strong> {{ new.title }}</p>
+        <p><strong>Description:</strong> {{ new.description }}</p>
+        <br>
+    {% endfor %}
+
+{% endblock %}
