@@ -28,7 +28,7 @@ class AboutController extends AbstractFOSRestController  {
     /**
      * Update about section data
      * @Rest\Post("/about", name="api_about_update", methods={"POST"})
-     * @Rest\QueryParam(name="content", allowBlank=false)
+     * @Rest\RequestParam(name="content", allowBlank=false, description="The content of about section to update")
      * @param Request $request
      * @return View
      */
