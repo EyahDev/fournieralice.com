@@ -1,5 +1,9 @@
 {% extends 'base/base.html.twig' %}
 
+{% block title %}
+    Alice Fournier | Portfolio - Accès à l'administration
+{% endblock %}
+
 {% block body %}
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -7,32 +11,33 @@
 
     <div class="uk-flex uk-flex-center">
         <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s">
-            <div class="uk-card uk-card-default uk-card-body login-card">
-                <h3 class="uk-card-title">Connexion à l'administration</h3>
+            <div class="uk-card uk-card-default uk-width-1 uk-card-body login-card">
+                <h3 class="uk-card-title">Accès à l'administration</h3>
 
                 <form action="{{ path('administration') }}" method="post">
                     <div class="uk-margin">
-                        <div class="uk-inline uk-width-1-1">
-                            <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: user"></span>
+                        <div class="uk-inline uk-width-1">
+                            <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: mail"></span>
                             <input class="uk-input" type="text" id="username" name="_username" placeholder="Adresse email" value="{{ lastUsername }}" >
                         </div>
 
                         <div class="uk-margin">
-                            <div class="uk-inline uk-width-1-1">
+                            <div class="uk-inline uk-width-1">
                                 <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
                                 <input class="uk-input" type="password" id="password" placeholder="Mot de passe" name="_password">
                             </div>
                         </div>
 
                         <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                            <label><input class="uk-checkbox" type="checkbox"> Garder la connexion active</label>
+                            <label><input class="uk-checkbox" type="checkbox"> Rester connecté</label>
                         </div>
 
                         <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" type="submit">Connexion</button>
                     </div>
                 </form>
 
-                <a href="{{ path('lostPassword') }}">Mot de passe perdu ? </a>
+                <a class="uk-align-right uk-button uk-button-default" type="button" uk-toggle="target: #toggle-usage; animation: uk-animation-fade">Mot de passe perdu ? </a>
+                <p id="toggle-usage" hidden>What's up?</p>
             </div>
         </div>
     </div>
@@ -56,11 +61,7 @@
         }
 
         .uk-card-title {
-            margin-bottom: 50px;
-        }
-
-        .uk-button-primary {
-            /*background-color: #35a533 !important;*/
+            margin-bottom: 45px;
         }
     </style>
 {% endblock %}

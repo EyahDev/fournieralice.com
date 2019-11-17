@@ -1,4 +1,6 @@
 $button-primary-background: #58af32;
+$form-radio-checked-focus-background: #545454;
+$form-radio-checked-background: #545454;
 
 @import "~uikit/src/scss/variables-theme.scss";
 @import "~uikit/src/scss/mixins-theme.scss";
@@ -10,6 +12,16 @@ html, body, #app, #particles-js {
 }
 
 #particles-js {
-  background: #404040 no-repeat;
+  background: #3a85c5 no-repeat;
   background-size: cover;
+  animation: color_change 15s infinite alternate;
+}
+
+@-webkit-keyframes color_change {
+  from { background-color: #3a85c5; }
+  to { background-color: #000; }
+}
+
+#particles-js:before {
+  background: #000000 ;
 }

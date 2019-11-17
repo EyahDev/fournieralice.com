@@ -16,8 +16,7 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/administration');
-
-        $form = $crawler->selectButton('login')->form();
+        $form = $crawler->selectButton('Connexion')->form();
         $form['_username'] = 'harry.potter@mail.com';
         $form['_password'] = 'complexePassword123';
 
@@ -32,7 +31,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/administration');
 
-        $form = $crawler->selectButton('login')->form();
+        $form = $crawler->selectButton('Connexion')->form();
 
         $form['_username'] = 'harry.potter@mail.com';
         $form['_password'] = 'wrongPassword123';
@@ -142,7 +141,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->filter('html:contains("login")')->count());
+        $this->assertSame(1, $crawler->filter('html:contains("Connexion")')->count());
 
         // -----------------------------
         $client = static::createClient(array(), array(
