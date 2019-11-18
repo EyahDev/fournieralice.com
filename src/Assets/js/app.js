@@ -69,9 +69,11 @@ function getLocale() {
 
 /* Import des composants vue */
 import login from  '../components/login.vue';
+import forgottenPassword from  '../components/security/forgotten-password.vue';
 
 /* Chargement des composants vue */
 Vue.component('login', login);
+Vue.component('forgotten-password', forgottenPassword);
 
 /* Rendu vue */
 new Vue({

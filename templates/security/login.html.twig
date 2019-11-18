@@ -9,7 +9,16 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
+    {#    <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s uk-animation-slide-left-medium" id="toggle-usage" hidden>#}
+    {#        <div class="uk-card uk-card-default uk-width-1 uk-card-body">#}
+    {#            <h3 class="uk-card-title">Mot de passe perdu</h3>#}
+    {#            <p>Saisissez votre adresse email, un email vous sera envoyé avec la procédure de réinitialisation de votre mot de passe</p>#}
+
+    {#        </div>#}
+    {#    </div>#}
+
     <div class="uk-flex uk-flex-center">
+
         <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s">
             <div class="uk-card uk-card-default uk-width-1 uk-card-body login-card">
                 <h3 class="uk-card-title">Accès à l'administration</h3>
@@ -18,13 +27,15 @@
                     <div class="uk-margin">
                         <div class="uk-inline uk-width-1">
                             <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: mail"></span>
-                            <input class="uk-input" type="text" id="username" name="_username" placeholder="Adresse email" value="{{ lastUsername }}" >
+                            <input class="uk-input" type="text" id="username" name="_username"
+                                   placeholder="Adresse email" value="{{ lastUsername }}">
                         </div>
 
                         <div class="uk-margin">
                             <div class="uk-inline uk-width-1">
                                 <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-                                <input class="uk-input" type="password" id="password" placeholder="Mot de passe" name="_password">
+                                <input class="uk-input" type="password" id="password" placeholder="Mot de passe"
+                                       name="_password">
                             </div>
                         </div>
 
@@ -32,17 +43,21 @@
                             <label><input class="uk-checkbox" type="checkbox"> Rester connecté</label>
                         </div>
 
-                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" type="submit">Connexion</button>
+                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" type="submit">
+                            Connexion
+                        </button>
                     </div>
                 </form>
 
-                <a class="uk-align-right uk-button uk-button-default" type="button" uk-toggle="target: #toggle-usage; animation: uk-animation-fade">Mot de passe perdu ? </a>
-                <p id="toggle-usage" hidden>What's up?</p>
+                <a href="#modal-forgotten-password" class="uk-align-right" uk-toggle>Mot de passe perdu ? </a>
             </div>
         </div>
-    </div>
-    <div id="particles-js"></div>
 
+        <forgotten-password></forgotten-password>
+
+    </div>
+
+    <div id="particles-js"></div>
 
 {% endblock %}
 
