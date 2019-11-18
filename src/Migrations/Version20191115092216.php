@@ -23,9 +23,9 @@ final class Version20191115092216 extends AbstractMigration
           id SERIAL PRIMARY KEY,
           title VARCHAR(255) NOT NULL UNIQUE,
           description TEXT NOT NULL,
-          publication_date DATETIME,
+          publication_date DATETIME NOT NULL DEFAULT NOW(),
           last_edit_date DATETIME,
-          author_id INTEGER REFERENCES user(id_user)
+          author_id INTEGER REFERENCES user(id_user) ON DELETE CASCADE
       ) ENGINE=InnoDB');
     }
 

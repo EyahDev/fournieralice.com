@@ -2,9 +2,9 @@
 
 {% block body %}
     <h2>News</h2>
-    {% for new in news  %}
-        <p><strong>Titre:</strong> {{ new.title }}</p>
-        <p><strong>Description:</strong> {{ new.description }}</p>
+    {% for news in news_list  %}
+        <p><strong>Titre:</strong> {{ news.title }}</p>
+        <p><strong>Description:</strong> {{ news.description }}</p>
         <br>
     {% endfor %}
 

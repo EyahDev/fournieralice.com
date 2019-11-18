@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NewsRepository")
  */
-class News
+class News implements \Serializable
 {
     /**
      * @ORM\Id()
@@ -37,9 +38,10 @@ class News
     private $lastEditDate;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="User", fetch="EAGER")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id_user")
      */
-    private $authorId;
+    private $author;
 
     public function getId(): ?int
     {
@@ -94,15 +96,45 @@ class News
         return $this;
     }
 
-    public function getAuthorId(): ?int
+    public function getAuthor(): ?int
     {
-        return $this->authorId;
+        return $this->author;
     }
 
-    public function setAuthorId(int $authorId): self
+    public function setAuthor(User $author): self
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
 
         return $this;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->title,
+            $this->description,
+            $this->publicationDate,
+            $this->lastEditDate,
+            $this->author
+        ));
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->title,
+            $this->description,
+            $this->publicationDate,
+            $this->lastEditDate,
+            $this->author,
+            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 }
