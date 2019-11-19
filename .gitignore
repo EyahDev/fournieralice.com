@@ -13,6 +13,7 @@
 /var/
 /vendor/
 node_modules/
+public/
 ###< application files ###
 
 
