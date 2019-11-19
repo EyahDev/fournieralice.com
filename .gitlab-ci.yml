@@ -24,7 +24,8 @@ test:
   before_script:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
-    - apt-get install -yqq git unzip zlib1g-dev php-pcov
+    - apt-get install -yqq git unzip zlib1g-dev
+    - apt install php-pcov
     - docker-php-ext-install pdo_mysql zip opcache php-pcov
 
   script:
@@ -34,7 +35,7 @@ test:
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
     - php bin/console doctrine:migrations:migrate --env=test
     - php bin/console doctrine:fixtures:load --env=test
-    - phpdbg -qrr -d memory_limit=2000M bin/phpunit --coverage-text --colors=never tests/
+    - php -d pcov.enabled=1 bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
