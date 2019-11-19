@@ -1,11 +1,11 @@
-var encore = require('@symfony/webpack-encore');
+let encore = require('@symfony/webpack-encore');
 
 encore
     .configureFilenames({
         js: 'js/[name].js',
         css: 'css/[name].css',
-        images: 'img/[name].css',
-        fonts: 'fonts/[name].css'
+        images: 'img/[name].[ext]',
+        fonts: 'fonts/[name].[ext]'
     })
 
     .setOutputPath('public/build')
@@ -21,40 +21,16 @@ encore
     .addEntry('app', './src/Assets/js/app.js')
     .enableVueLoader()
 
+    .addLoader({
+        test: /\.s[ac]ss$/i,
+        use: [
+            "style-loader",
+            "css-loader",
+            "sass-loader"
+        ]
+    })
+
     .disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild();
 
 module.exports = encore.getWebpackConfig();
-
-//Configuration Webpack, au cas ou...
-
-// module.exports = {
-//     entry: './src/Assets/js/app.js',
-//     output: {
-//         path: path.resolve(__dirname, 'public/build/js'),
-//         filename: 'app.js'
-//     },
-//     module: {
-//         rules: [
-//             {
-//                 test: /\.css$/,
-//                 use: [
-//                     'style-loader',
-//                     'css-loader'
-//                 ]
-//             },
-//             {
-//                 test: /\.vue$/,
-//                 loader: 'vue-loader'
-//             }
-//         ]
-//     },
-//     plugins: [
-//         new webpack.ProvidePlugin({
-//             $: "jquery",
-//             jQuery: "jquery",
-//             jquery: "jquery",
-//         }),
-//         new VueLoaderPlugin()
-//     ]
-// };
