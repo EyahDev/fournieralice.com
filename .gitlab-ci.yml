@@ -24,8 +24,8 @@ test:
   before_script:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
-    - apt-get install -yqq git unzip zlib1g-dev
-    - docker-php-ext-install pdo_mysql zip opcache
+    - apt-get install -yqq git unzip zlib1g-dev php-pcov
+    - docker-php-ext-install pdo_mysql zip opcache php-pcov
 
   script:
     - echo "Running tests"
