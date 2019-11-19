@@ -28,6 +28,6 @@ class CreateUserCommandTest extends KernelTestCase
             'phone' => '0601020304'
         ]);
 
-        $this->assertContains("[OK] L'utilisateur Harry Potter a bien été créé", $commandTesterWithoutError->getDisplay());
+        $this->assertStringContainsString("[OK] L'utilisateur Harry Potter a bien été créé", $commandTesterWithoutError->getDisplay());
     }
 }
