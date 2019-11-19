@@ -25,8 +25,9 @@ test:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
     - apt-get install -yqq git unzip zlib1g-dev
-    - apt install php-pcov
-    - docker-php-ext-install pdo_mysql zip opcache php-pcov
+    - pecl install pcov
+    - docker-php-ext-install pdo_mysql zip opcache
+    - docker-php-ext-enable pcov
 
   script:
     - echo "Running tests"
