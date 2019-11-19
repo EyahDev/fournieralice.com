@@ -5,23 +5,19 @@
 {% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {#    <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s uk-animation-slide-left-medium" id="toggle-usage" hidden>#}
-    {#        <div class="uk-card uk-card-default uk-width-1 uk-card-body">#}
-    {#            <h3 class="uk-card-title">Mot de passe perdu</h3>#}
-    {#            <p>Saisissez votre adresse email, un email vous sera envoyé avec la procédure de réinitialisation de votre mot de passe</p>#}
-
-    {#        </div>#}
-    {#    </div>#}
 
     <div class="uk-flex uk-flex-center">
 
-        <div class="login uk-flex uk-flex-center uk-width-1-4@l uk-width-1@s">
+        <div class="login uk-flex uk-flex-center uk-width-1-4@xl uk-width-2-5@l uk-width-1-2@m uk-width-3-4@s uk-width-5-6">
             <div class="uk-card uk-card-default uk-width-1 uk-card-body login-card">
                 <h3 class="uk-card-title">Accès à l'administration</h3>
+
+                {% if error %}
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" id="close-error" uk-close></a>
+                        <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                    </div>
+                {% endif %}
 
                 <form action="{{ path('administration') }}" method="post">
                     <div class="uk-margin">
@@ -71,7 +67,6 @@
         }
 
         .login-card {
-            margin: 5px;
             border-radius: 4px;
         }
 
