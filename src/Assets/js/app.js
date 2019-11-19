@@ -9,6 +9,11 @@ import '../css/app.scss'
 
 /* Import vue */
 import Vue from 'vue';
+import axios from './api/http.js';
+import Routage from './api/routing.js';
+
+window.$http = axios;
+window.Routing = Routage;
 
 let VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
@@ -65,10 +70,14 @@ function getLocale() {
 /* Import des composants vue */
 import Editor from '@tinymce/tinymce-vue'
 import login from  '../components/login.vue';
+import About from '../components/About.vue';
+import AboutEditor from '../components/Admin/AboutEdit.vue';
 
 /* Chargement des composants vue */
 Vue.component('editor', Editor);
 Vue.component('login', login);
+Vue.component('about-section', About);
+Vue.component('about-edit', AboutEditor);
 
 /* Rendu vue */
 new Vue({
