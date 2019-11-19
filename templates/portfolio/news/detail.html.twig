@@ -4,4 +4,5 @@
     <h2>{{ news.title }}</h2>
     <p>{{ news.description }}</p>
 
+    <a href="{{ path('news_edit', {'id': news.id }) }}">Editer</a>
 {% endblock %}

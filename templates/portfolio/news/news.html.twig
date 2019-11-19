@@ -3,9 +3,13 @@
 {% block body %}
     <h2>News</h2>
     {% for news in news_list  %}
-        <p><strong>Titre:</strong> {{ news.title }}</p>
+    <div>
+        <a href = "{{ path('news_single', {'id': news.id }) }}"><strong>Titre:</strong> {{ news.title }}</a>
         <p><strong>Description:</strong> {{ news.description }}</p>
-        <br>
+    </div>
+    <br>
     {% endfor %}
+
+    <a href="{{ path('news_create') }}">Créer</a>
 
 {% endblock %}

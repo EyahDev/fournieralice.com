@@ -5,8 +5,10 @@ namespace App\Controller\Portfolio;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\NewsRepository;
+use App\Form\Type\News\NewsType;
 use App\Entity\News;
 
 class NewsController extends AbstractController
@@ -31,14 +33,37 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @Route("/news/{id}", name="news_single_get", methods={"GET"})
+     * @Route("/news/create", name="news_create")
+     */
+    public function createNews(Request $request)
+    {
+        $news = new News();
+        $form = $this->createForm(NewsType::class, $news);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $news->setAuthor($this->getUser());
+            $news->setPublicationDate(new \DateTime());
+            $news = $this->repository->save($news);
+
+            $this->addFlash('confirm', 'La news a bien été créé');
+
+            return $this->redirectToRoute('news');
+        }
+
+        return $this->render('portfolio/news/edit.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * @Route("/news/{id}", name="news_single", methods={"GET"})
      */
     public function getSingleNews(int $id)
     {
         $news = $this->repository->findOneById($id);
         if(!$news) {
-            $response = new Response('', Response::HTTP_NOT_FOUND);
-            $response->send();
+            return $this->redirectToRoute('news');
         }
 
         return $this->render('portfolio/news/detail.html.twig', [
@@ -47,44 +72,34 @@ class NewsController extends AbstractController
     }
 
     /**
-     * @Route("/news", name="news_create", methods={"POST"})
-     */
-    public function createNews(Request $request)
-    {
-        $news = new News();
-        $data = json_decode($request->getContent(), true);
-        $news->setTitle($data['title']);
-        $news->setDescription($data['description']);
-        $news->setPublicationDate(new \DateTime());
-        $news->setAuthor($this->getUser());
-        $news = $this->repository->save($news);
-
-        $response = new Response(json_encode($news), Response::HTTP_CREATED);
-        $response->send();
-    }
-
-    /**
-     * @Route("/news/{id}", name="news_edit", methods={"POST"})
+     * @Route("/news/{id}/edit", name="news_edit")
      */
     public function editNews(int $id, Request $request)
     {
         $news = $this->repository->findOneById($id);
         if(!$news) {
-            $response = new Response('', Response::HTTP_NOT_FOUND);
-            $response->send();
+            return $this->redirectToRoute('news');
         }
-        $data = json_decode($request->getContent(), true);
-        $news->setTitle($data['title']);
-        $news->setDescription($data['description']);
-        $news->setLastEditDate(new \DateTime());
-        $this->repository->save($news);
 
-        $response = new Response($news->serialize(), Response::HTTP_OK);
-        $response->send();
+        $form = $this->createForm(NewsType::class, $news);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $news->setLastEditDate(new \DateTime());
+            $this->repository->save($news);
+
+            $this->addFlash('confirm', 'La news a bien été modifié');
+
+            return $this->redirectToRoute('news_single', array('id' => $id));
+        }
+
+        return $this->render('portfolio/news/edit.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     /**
-     * @Route("/news/{id}", name="delete", methods={"DELETE"})
+     * @Route("/news/{id}", name="news_delete", methods={"DELETE"})
      */
     public function deleteNews(int $id)
     {
@@ -93,7 +108,6 @@ class NewsController extends AbstractController
             $this->repository->delete($news);
         }
 
-        $response = new Response('', Response::HTTP_NO_CONTENT);
-        $response->send();
+        return $this->redirectToRoute('news');
     }
 }
