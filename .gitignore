@@ -9,7 +9,9 @@
 ###< phpunit ###
 
 ###> application files ###
-/public/build
+/public/*
+!/public/.htaccess
+!/public/index.php
 /var/
 /vendor/
 node_modules/

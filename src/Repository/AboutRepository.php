@@ -6,10 +6,11 @@ namespace App\Repository;
 
 use App\Entity\About;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+
 
 /**
  * @method About|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,9 +22,9 @@ class AboutRepository extends ServiceEntityRepository
 {
     /**
      * AboutRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, About::class);
     }

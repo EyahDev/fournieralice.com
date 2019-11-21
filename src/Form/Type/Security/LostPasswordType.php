@@ -17,7 +17,7 @@ class LostPasswordType extends AbstractType
         $builder
             ->add('email', EmailType::class, array(
                 'constraints' => array(
-                    new Email(array('message' => "Veuillez saisir un email valide", 'checkMX' => true)),
+                    new Email(array('message' => "Veuillez saisir un email valide")),
                     new NotBlank(array('message' => "Veuillez saisir un email valide"))
                 ),
                 'label' => 'Email du mot de passe perdu',
