@@ -34,7 +34,7 @@ test:
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
     - php bin/console doctrine:migrations:migrate --env=test
     - php bin/console doctrine:fixtures:load --env=test
-    - php bin/phpunit --coverage-text --colors=never tests/
+    - phpdbg -qrr -d memory_limit=2000M bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy

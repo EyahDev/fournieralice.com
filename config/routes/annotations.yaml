@@ -1,3 +1,15 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+
+api:
+    resource: ../../src/Api/
+    type: annotation
+    prefix: /api
+    options:
+        expose: true
+
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
