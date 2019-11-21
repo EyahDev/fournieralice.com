@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\About;
 use App\Entity\User;
 use App\Services\Utils\TokenGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -31,6 +32,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $this->loadUsers($manager);
+        $this->loadAbout($manager);
     }
 
     /**
@@ -79,6 +81,14 @@ class AppFixtures extends Fixture
             $manager->persist($user);
             $this->addReference($email, $user);
         }
+        $manager->flush();
+    }
+
+    public function loadAbout(ObjectManager $manager) {
+        $about = new About();
+        $about->setContent('<h1>About section !</h1>');
+        $about->setUpdated(new \DateTime());
+        $manager->persist($about);
         $manager->flush();
     }
 }
