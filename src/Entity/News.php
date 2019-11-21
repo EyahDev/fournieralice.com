@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 
 /**
+  * @ORM\Table(name="news")
  * @ORM\Entity(repositoryClass="App\Repository\NewsRepository")
  */
 class News implements \Serializable
@@ -96,7 +97,7 @@ class News implements \Serializable
         return $this;
     }
 
-    public function getAuthor(): ?int
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
