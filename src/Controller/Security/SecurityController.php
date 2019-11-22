@@ -99,7 +99,7 @@ class SecurityController extends AbstractController
 
         $user = $em->getRepository(User::class)->findOneBy(['resetPasswordToken' => $token]);
 
-        if (!$user)     {
+        if (!$user) {
             throw new NotFoundHttpException('Cette page n\'existe pas');
         } elseif ($user && $user->getResetPasswordTokenValidityDate() < new \DateTime()) {
             return $this->render('security/invalid_token.html.twig');

@@ -25,7 +25,9 @@ test:
     - curl -sS https://getcomposer.org/installer | php
     - apt-get update -yqq
     - apt-get install -yqq git unzip zlib1g-dev
+    - pecl install pcov
     - docker-php-ext-install pdo_mysql zip opcache
+    - docker-php-ext-enable pcov
 
   script:
     - echo "Running tests"
@@ -34,7 +36,7 @@ test:
     - touch phpunit.xml && echo -e $PHPUNIT_XML >> phpunit.xml
     - php bin/console doctrine:migrations:migrate --env=test
     - php bin/console doctrine:fixtures:load --env=test
-    - phpdbg -qrr -d memory_limit=2000M bin/phpunit --coverage-text --colors=never tests/
+    - php -d pcov.enabled=1 bin/phpunit --coverage-text --colors=never tests/
 
 deploy_staging:
   stage: deploy
@@ -61,7 +63,7 @@ deploy_staging:
       composer install --optimize-autoloader'
     - scp -P $STAGING_PORT .env.local $STAGING_USER@$STAGING_HOST:staging.adriendesmet.com/fournieralice.com/
     - ssh $STAGING_USER@$STAGING_HOST -p $STAGING_PORT
-      'cd staging.adriendesmet.com/fournieralice.com/ &&
+      'cd staging.adriendesmet.com/fournieralice.com/ && php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json &&
       /opt/alt/alt-nodejs8/root/usr/bin/npm install --scripts-prepend-node-path && /opt/alt/alt-nodejs8/root/usr/bin/npm run prod --scripts-prepend-node-path &&
       php bin/console doctrine:migrations:migrate --env=prod'
 

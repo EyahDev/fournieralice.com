@@ -1,1 +1,0 @@
-{"base_url":"","routes":{"api_about_index":{"tokens":[["text","\/api\/about"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":["GET"],"schemes":[]},"api_about_update":{"tokens":[["text","\/api\/about"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":["POST"],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":[]}
