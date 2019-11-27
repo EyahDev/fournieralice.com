@@ -15,67 +15,29 @@ class NewsController extends AbstractController
 {
 
     /**
-     * @Route("/administration/news/create", name="news_create")
+     * @return Response
+     *
+     * @Route(name="newsList", path="/administration/news")
      */
-    public function createNews(Request $request)
+    public function NewsList()
     {
-        $news = new News();
-        $form = $this->createForm(NewsType::class, $news);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $news->setAuthor($this->getUser());
-            $news->setPublicationDate(new \DateTime());
-            $this->getDoctrine()->getRepository(News::class)->save($news);
-
-            $this->addFlash('confirm', 'La news ' . $news->getTitle() . ' a bien été créé');
-
-            return $this->redirectToRoute('news');
-        }
-
-        return $this->render('administration/news/edit.html.twig', array(
-            'form' => $form->createView()
-        ));
+        return $this->render('administration/news/newsList.html.twig');
     }
 
     /**
-     * @Route("/administration/news/{id}/edit", name="news_edit")
+     * @return Response
+     *
+     * @Route(name="newsEdit", path="/administration/news/{id}")
      */
-    public function editNews(int $id, Request $request)
+    public function NewsEdit(int $id)
     {
         $news = $this->getDoctrine()->getRepository(News::class)->findOneById($id);
         if(!$news) {
-            return $this->redirectToRoute('news');
+            return $this->redirectToRoute('newsList');
         }
 
-        $form = $this->createForm(NewsType::class, $news);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $news->setLastEditDate(new \DateTime());
-            $this->getDoctrine()->getRepository(News::class)->save($news);
-
-            $this->addFlash('confirm', 'La news ' . $news->getTitle() . ' a bien été modifié');
-
-            return $this->redirectToRoute('news_single', array('id' => $id));
-        }
-
-        return $this->render('administration/news/edit.html.twig', array(
-            'form' => $form->createView()
+        return $this->render('administration/news/newsEdit.html.twig', array(
+            'news' => $news,
         ));
-    }
-
-    /**
-     * @Route("/administration/news/{id}/delete", name="news_delete")
-     */
-    public function deleteNews(int $id)
-    {
-        $news = $this->getDoctrine()->getRepository(News::class)->findOneById($id);
-        if($news) {
-            $this->getDoctrine()->getRepository(News::class)->delete($news);
-            $this->addFlash('confirm', 'La news ' . $news->getTitle() . ' a bien été supprimé');
-        }
-
-        return $this->redirectToRoute('news');
     }
 }

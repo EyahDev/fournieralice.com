@@ -1,0 +1,14 @@
+{% extends 'base/base.html.twig' %}
+
+{% block body %}
+    {% if news %}
+        <news-edit
+          news_id="{{ news.id }}"
+          title="{{ news.title }}"
+          description="{{ news.description }}">
+        </news-edit>
+    {% else %}
+        <news-edit></news-edit>
+    {% endif %}
+
+{% endblock %}

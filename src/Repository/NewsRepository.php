@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method News|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NewsRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, News::class);
     }
@@ -23,6 +23,14 @@ class NewsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('n')
                     ->orderBy('n.publicationDate', 'DESC')
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function findForDisplay()
+    {
+        return $this->createQueryBuilder('n')
+                    ->orderBy('n.archived ASC', 'n.publicationDate DESC')
                     ->getQuery()
                     ->getResult();
     }

@@ -67,17 +67,36 @@ function getLocale() {
     return 'fr'
 }
 
+/* Import de moment */
+import Moment from 'moment';
+import localization from 'moment/locale/fr';
+
+moment.updateLocale('fr', localization);
+
+Vue.filter('standardDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD/MM/YYYY hh:mm:ss')
+  }
+});
+
+
 /* Import des composants vue */
 import Editor from '@tinymce/tinymce-vue'
 import login from  '../components/login.vue';
 import About from '../components/About.vue';
 import AboutEditor from '../components/Admin/AboutEdit.vue';
+import News from '../components/News.vue';
+import NewsList from '../components/Admin/NewsList.vue';
+import NewsEdit from '../components/Admin/NewsEdit.vue';
 
 /* Chargement des composants vue */
 Vue.component('editor', Editor);
 Vue.component('login', login);
 Vue.component('about-section', About);
 Vue.component('about-edit', AboutEditor);
+Vue.component('news', News);
+Vue.component('news-list', NewsList);
+Vue.component('news-edit', NewsEdit);
 
 /* Rendu vue */
 new Vue({

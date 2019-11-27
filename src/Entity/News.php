@@ -14,27 +14,27 @@ class News implements \Serializable
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="publication_date", type="datetime")
      */
     private $publicationDate;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="last_edit_date", type="datetime", nullable=true)
      */
     private $lastEditDate;
 
@@ -43,6 +43,11 @@ class News implements \Serializable
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id_user")
      */
     private $author;
+
+    /**
+     * @ORM\Column(name="archived", type="boolean")
+     */
+    private $archived = true;
 
     public function getId(): ?int
     {
@@ -109,6 +114,18 @@ class News implements \Serializable
         return $this;
     }
 
+    public function getArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
     /**
      * @return mixed|string
      */
@@ -120,7 +137,8 @@ class News implements \Serializable
             $this->description,
             $this->publicationDate,
             $this->lastEditDate,
-            $this->author
+            $this->author,
+            $this->archived
         ));
     }
 
@@ -136,6 +154,7 @@ class News implements \Serializable
             $this->publicationDate,
             $this->lastEditDate,
             $this->author,
-            ) = unserialize($serialized, array('allowed_classes' => false));
+            $this->archived,
+            ) = unserialize($serialized, array('allowed_classes' => true));
     }
 }

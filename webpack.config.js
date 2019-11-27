@@ -16,6 +16,7 @@ encore
         jQuery: 'jquery',
         jquery: 'jquery',
         'window.jQuery': 'jquery',
+        moment: 'moment'
     })
 
     .addEntry('app', './src/Assets/js/app.js')

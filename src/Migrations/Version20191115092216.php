@@ -25,7 +25,8 @@ final class Version20191115092216 extends AbstractMigration
           description TEXT NOT NULL,
           publication_date DATETIME NOT NULL DEFAULT NOW(),
           last_edit_date DATETIME,
-          author_id INTEGER REFERENCES user(id_user) ON DELETE CASCADE
+          author_id INTEGER REFERENCES user(id_user) ON DELETE CASCADE,
+          archived BOOLEAN NOT NULL DEFAULT TRUE
       ) ENGINE=InnoDB');
     }
 
