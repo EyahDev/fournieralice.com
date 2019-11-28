@@ -26,4 +26,22 @@ class PortfolioControllerTest extends WebTestCase
         // Test du contenu (bouton de connexion du formulaire)
         $this->assertSame(1, $crawler->filter('html:contains("Homepage")')->count());
     }
+
+    public function testNewspage()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/news');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+    public function testHomeDetailpage()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/news/1');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
 }

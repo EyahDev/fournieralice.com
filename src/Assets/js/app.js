@@ -85,7 +85,6 @@ import Editor from '@tinymce/tinymce-vue'
 import login from  '../components/login.vue';
 import About from '../components/About.vue';
 import AboutEditor from '../components/Admin/AboutEdit.vue';
-import News from '../components/News.vue';
 import NewsList from '../components/Admin/NewsList.vue';
 import NewsEdit from '../components/Admin/NewsEdit.vue';
 
@@ -94,7 +93,6 @@ Vue.component('editor', Editor);
 Vue.component('login', login);
 Vue.component('about-section', About);
 Vue.component('about-edit', AboutEditor);
-Vue.component('news', News);
 Vue.component('news-list', NewsList);
 Vue.component('news-edit', NewsEdit);
 

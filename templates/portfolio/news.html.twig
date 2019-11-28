@@ -1,0 +1,38 @@
+
+{% extends full ? 'base/base.html.twig' : 'base/empty.html.twig' %}
+
+
+{% block body %}
+
+  {% set newsArray = newsList %}
+  {% if full != true %}
+    {% set newsArray = newsList | slice(0, display) %}
+  {% else %}
+    <h2>News</h2>
+  {% endif %}
+
+  {% for news in newsArray %}
+  <div>
+    <a href="{{ path('news_detail', {id: news.id}) }}">Lire</a>
+    <p>
+      <strong>{{ news.title }}</strong>
+    </p>
+    {{ news.description | raw }}
+    <p>
+      <strong>Publié le:</strong>
+      {{ news.publicationDate|date('d-m-Y') }}
+
+    {% if news.lastEditDate %}
+
+        <strong>Modifié le:</strong>
+        {{ news.lastEditDate|date('d-m-Y') }}
+
+    {% endif %}
+
+      <strong>Ajouté par:</strong>
+      {{ news.author.firstname }}
+      {{ news.author.lastname }}</p>
+  </div>
+  {% endfor %}
+
+{% endblock %}

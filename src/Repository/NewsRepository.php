@@ -30,7 +30,8 @@ class NewsRepository extends ServiceEntityRepository
     public function findForDisplay()
     {
         return $this->createQueryBuilder('n')
-                    ->orderBy('n.archived ASC', 'n.publicationDate DESC')
+                    ->addOrderBy('n.archived', 'ASC')
+                    ->addOrderBy('n.publicationDate', 'DESC')  
                     ->getQuery()
                     ->getResult();
     }

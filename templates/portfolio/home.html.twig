@@ -2,7 +2,9 @@
 
 {% block body %}
     <p>Homepage</p>
-    <news></news>
-    <a href="{{ path('administration') }}">Administration</a>  
+
+    {% include 'portfolio/news.html.twig' with { 'newsList': news, 'full': false, 'display': 2 } %}
+    <p><a href="{{ path('news') }}">Voir toutes les news</a></p>
+    <p><a href="{{ path('administration') }}">Administration</a></p>
     <about-section></about-section>
 {% endblock %}
