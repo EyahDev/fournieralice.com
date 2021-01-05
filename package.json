@@ -25,7 +25,7 @@
     "@symfony/webpack-encore": "^0.23.0",
     "@tinymce/tinymce-vue": "^3.0.1",
     "css-loader": "^2.1.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "file-loader": "^3.0.1",
     "jquery": "^3.4.1",
     "lang.js": "^1.1.14",
